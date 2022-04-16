@@ -138,7 +138,14 @@ end
 
 end)
 
--- Beat Runner
+
+local sec2 = tab:Section("Teleports")
+
+sec2:Button("Teleport to Sky Carrot", function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-148.272812, 469.079163, -8.80027676, -0.993445814, 2.6414424e-09, -0.114304125, -4.48225768e-09, 1, 6.20653253e-08, 0.114304125, 6.21708764e-08, -0.993445814)
+end)
+
+-- [[ Beat Runner ]] 
 
 elseif game.PlaceId == 5578992252 then
 	local SolarisLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/sol"))()
@@ -175,5 +182,4 @@ sec:Bind("Invincibility", Enum.KeyCode.R, false, "Allows you to not die from hit
 		print(toggled)
 	end
 end)
-
 end
