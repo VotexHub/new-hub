@@ -197,7 +197,7 @@ local tab = win:Tab("Main")
 
 local sec = tab:Section("Main")
 
-local t = false
+local t = true
 
 sec:Bind("Esp", Enum.KeyCode.R, false, "Esp shows the location of players", function()
 	if t == true then
@@ -209,7 +209,7 @@ for i,v in pairs(game:GetService("Players"):GetPlayers()) do
     if v.TeamColor ~= player.TeamColor then
         local billboardGUi2 = Instance.new("BillboardGui")
 billboardGUi2.Parent = v.Character.Head
-billboardGUi2.Size = UDim2.new(1, 0, 1, 0)
+billboardGUi2.Size = UDim2.new(5, 0, 5, 0)
 billboardGUi2.AlwaysOnTop = true
 billboardGUi2.StudsOffset = Vector3.new(0,2,0)
 billboardGUi2.Name = "esp"
@@ -217,12 +217,28 @@ billboardGUi2.Name = "esp"
 local textlabel = Instance.new("TextLabel")
 textlabel.Parent = billboardGUi2
 textlabel.Text = v.Name
-textlabel.Size = UDim2.new(2,0,0.5,0)
-textlabel.TextScaled = true
-textlabel.BackgroundTransparency = 0.5
+textlabel.Size = UDim2.new(1,0,1,0)
+textlabel.TextSize = 8
+textlabel.BackgroundTransparency = 1
 textlabel.Font = Enum.Font.Cartoon
-textlabel.BackgroundColor3 = Color3.fromRGB(v.TeamColor)
-textlabel.TextColor3 = Color3.fromRGB(255,255,255)
+textlabel.BackgroundColor3 = Color3.fromRGB(0,0,0)
+textlabel.TextColor3 = Color3.fromRGB(0,0,0)
+
+        local billboardGUi22 = Instance.new("BillboardGui")
+billboardGUi22.Parent = v.Character.HumanoidRootPart
+billboardGUi22.Size = UDim2.new(2, 0, 2, 0)
+billboardGUi22.AlwaysOnTop = true
+billboardGUi22.StudsOffset = Vector3.new(0,2,0)
+billboardGUi22.Name = "esp"
+
+local textlabel2 = Instance.new("TextLabel")
+textlabel2.Parent = billboardGUi22
+textlabel2.Text = v.Name
+textlabel2.Size = UDim2.new(2,0,2,0)
+textlabel2.TextTransparency = 1
+textlabel2.BackgroundTransparency = 0.5
+textlabel2.BackgroundColor3 = Color3.fromRGB(0,0,0)
+textlabel2.TextColor3 = Color3.fromRGB(0,0,0)
 
     end
 end
@@ -234,10 +250,75 @@ elseif t == false then
 for i,v in pairs(game:GetService("Players"):GetPlayers()) do
     if v.Character.Head:FindFirstChild("esp") ~= nil then
         v.Character.Head:FindFirstChild("esp"):Destroy()
+        v.Character.HumanoidRootPart:FindFirstChild("esp"):Destroy()
 
     end
 end
 end
 end)
 
+local selected_part
+
+local dropdown = sec:Dropdown("Aimbot Bodypart", {"Head","Torso"},"","Select the part for the aimbot to aim", function(t)
+  selected_part = t
+end)
+
+
+	_G.aimbot = false
+	local camera = game.Workspace.CurrentCamera
+	local localplayer = game:GetService("Players").LocalPlayer
+
+sec:Button("Aimbot (Weird Toggle)", function()
+  if _G.aimbot == false then
+			_G.aimbot = true
+
+			function closestplayer()
+				local dist = math.huge -- math.huge means a really large number, 1M+.
+				local target = nil --- nil means no value
+				for i,v in pairs (game:GetService("Players"):GetPlayers()) do
+					if v.TeamColor ~= localplayer.TeamColor then
+					if v ~= localplayer then
+						if v.Character and v.Character:FindFirstChild("Head") and _G.aimbot and v.Character.Humanoid.Health > 0 then --- creating the checks
+							local magnitude = (v.Character.Head.Position - localplayer.Character.Head.Position).magnitude
+							if magnitude < dist then
+								dist = magnitude
+								target = v
+							end
+						end
+							
+						end
+					end
+				end
+				return target
+			end
+			
+		else
+			_G.aimbot = false
+		end
+	end)
+	
+	local settings = {
+		keybind = Enum.UserInputType.MouseButton2
+	}
+	
+	local UIS = game:GetService("UserInputService")
+	local aiming = false --- this toggle will make it so we lock on to the person when we press our keybind
+	
+	UIS.InputBegan:Connect(function(inp)
+		if inp.UserInputType == settings.keybind then
+			aiming = true
+		end
+	end)
+	
+	UIS.InputEnded:Connect(function(inp)
+		if inp.UserInputType == settings.keybind then ---- when we stop pressing the keybind it would unlock off the player
+			aiming = false
+		end
+	end)
+	
+	game:GetService("RunService").RenderStepped:Connect(function()
+		if aiming then
+			camera.CFrame = CFrame.new(camera.CFrame.Position,closestplayer().Character.Head.Position) -- locks into the HEAD
+		end
+end)
 end
