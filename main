@@ -321,4 +321,112 @@ sec:Button("Aimbot (Weird Toggle)", function()
 			camera.CFrame = CFrame.new(camera.CFrame.Position,closestplayer().Character.Head.Position) -- locks into the HEAD
 		end
 end)
+
+-- [[ Super Power Training Simulator ]] 
+
+elseif game.PlaceId == 2202352383 then
+	local SolarisLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/sol"))()
+
+local win = SolarisLib:New({
+  Name = "Super Power Training Simulator | Undetermined Hub",
+  FolderToSave = "SolarisLibStuff"
+})
+
+local tab = win:Tab("Main")
+
+local sec = tab:Section("Autofarm")
+
+local afEnd = sec:Toggle("Autofarm Body Toughness", false,"Automatically farms body toughness", function(t)
+  getgenv().command = t
+    while true do
+        if not getgenv().command then return end
+        wait(1)
+
+local args = {
+    [1] = {
+        [1] = "+BT1"
+    }
+}				
+
+game:GetService("ReplicatedStorage").RemoteEvent:FireServer(unpack(args))
+        
+    end
+end)
+
+local afFS = sec:Toggle("Autofarm Fist Strength", false,"Automatically farms fist strength", function(t)
+  getgenv().command = t
+    while true do
+        if not getgenv().command then return end
+        wait(1)
+
+local args = {
+    [1] = {
+        [1] = "+FS1"
+    }
+}
+
+game:GetService("ReplicatedStorage").RemoteEvent:FireServer(unpack(args))
+
+        
+    end
+end)
+
+local afMS = sec:Toggle("Autofarm Movement Speed", false,"Automatically farms movement speed", function(t)
+  getgenv().command = t
+    while true do
+        if not getgenv().command then return end
+        wait(1)
+
+local args = {
+    [1] = {
+        [1] = "+MS1"
+    }
+}
+
+game:GetService("ReplicatedStorage").RemoteEvent:FireServer(unpack(args))
+
+
+        
+    end
+end)
+
+local afJF = sec:Toggle("Autofarm Jump Force", false,"Automatically farms jump force", function(t)
+  getgenv().command = t
+    while true do
+        if not getgenv().command then return end
+        wait(1)
+local args = {
+    [1] = {
+        [1] = "+JF1"
+    }
+}
+
+game:GetService("ReplicatedStorage").RemoteEvent:FireServer(unpack(args))
+
+
+
+        
+    end
+end)
+
+local afPP = sec:Toggle("Autofarm Psychic Power", false,"Automatically psychich power", function(t)
+  getgenv().command = t
+    while true do
+        if not getgenv().command then return end
+        wait(1)
+
+local args = {
+    [1] = {
+        [1] = "+PP1"
+    }
+}
+
+game:GetService("ReplicatedStorage").RemoteEvent:FireServer(unpack(args))
+
+
+
+
+        
+    end
+end)
 end
